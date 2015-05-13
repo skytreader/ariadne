@@ -21,6 +21,28 @@ class MazeCellStates:
     OPEN_NORTH_EAST_SOUTH = 0xe
     OPEN_NORTH_EAST_SOUTH_WEST = 0xf
 
+    """
+    Maps the cell states above to a textual description
+    """
+    LABELS = {
+        MazeCellState.NO_OPEN: "NO_OPEN",
+        MazeCellState.OPEN_WEST: "OPEN_WEST",
+        MazeCellState.OPEN_SOUTH: "OPEN_SOUTH",
+        MazeCellState.OPEN_SOUTH_WEST: "OPEN_SOUTH_WEST",
+        MazeCellState.OPEN_EAST: "OPEN_EAST",
+        MazeCellState.OPEN_EAST_WEST: "OPEN_EAST_WEST",
+        MazeCellState.OPEN_EAST_SOUTH_WEST: "OPEN_EAST_SOUTH_WEST",
+        MazeCellState.OPEN_NORTH: "OPEN_NORTH",
+        MazeCellState.OPEN_NORTH_WEST: "OPEN_NORTH_WEST",
+        MazeCellState.OPEN_NORTH_SOUTH: "OPEN_NORTH_SOUTH",
+        MazeCellState.OPEN_NORTH_SOUTH_WEST: "OPEN_NORTH_SOUTH_WEST",
+        MazeCellState.OPEN_NORTH_EAST: "OPEN_NORTH_EAST",
+        MazeCellState.OPEN_NORTH_EAST_WEST: "OPEN_NORTH_EAST_WEST",
+        MazeCellState.OPEN_NORTH_EAST_SOUTH: "OPEN_NORTH_EAST_SOUTH",
+        MazeCellState.OPEN_NORTH_EAST_SOUTH_WEST: "OPEN_NORTH_EAST_SOUTH_WEST"
+    }
+
+
 class Maze(object):
     
     def __init__(self, width, height, initial_state=MazeCellStates.NO_OPEN):
