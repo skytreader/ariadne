@@ -23,8 +23,8 @@ class MazeCellStates:
 
 class Maze(object):
     
-    def __init__(self, width, height):
-        self.maze = [[MazeCellStates.NO_OPEN for _ in range(width)] for __ in range(height)]
+    def __init__(self, width, height, initial_state=MazeCellStates.NO_OPEN):
+        self.maze = [[initial_state for _ in range(width)] for __ in range(height)]
 
     def set_cell_state(self, row, col, cell_state):
         """

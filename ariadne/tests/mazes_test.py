@@ -10,8 +10,12 @@ class MazeTest(unittest.TestCase):
     def test_cell_state(self):
         self.maze.set_cell_state(0, 0, MazeCellStates.OPEN_WEST)
         self.assertEqual(self.maze.maze[0][0], MazeCellStates.OPEN_WEST)
+
         self.maze.set_cell_state(0, 0, MazeCellStates.OPEN_SOUTH)
         self.assertEqual(self.maze.maze[0][1], MazeCellStates.OPEN_NORTH)
+        self.assertEqual(self.maze.maze[0][0], MazeCellStates.OPEN_SOUTH_WEST)
+        
+        self.maze.set_cell_state(0, 0, MazeCellStates.NO_OPEN)
         self.assertEqual(self.maze.maze[0][0], MazeCellStates.OPEN_SOUTH_WEST)
 
 if __name__ == "__main__":
