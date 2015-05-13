@@ -33,7 +33,8 @@ class Maze(object):
 
         The effects of this method is cumulative. That is, if in one call you
         OPEN_WEST for a given cell, then in another call you OPEN_SOUTH in the
-        same cell, the effect is as if you made one call to OPEN_SOUTH_WEST.
+        same cell, the effect is as if you made one call to OPEN_SOUTH_WEST. It
+        also affects adjacent cells to ensure that the openings are bidirectional.
 
         Note that this cannot be used to undo removed walls.
 
