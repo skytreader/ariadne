@@ -60,8 +60,26 @@ class Maze(object):
     
     def __init__(self, width, height, initial_state=MazeCellStates.NO_OPEN):
         self.maze = [[initial_state for _ in range(width)] for __ in range(height)]
+    
+    def __set_cell_state(self, row, col, cell_state):
+        will_open_north = (cell_state & MazeCellStates.OPEN_NORTH) == MazeCellStates.OPEN_NORTH
+        will_open_east = (cell_state & MazeCellStates.OPEN_EAST) == MazeCellStates.OPEN_EAST
+        will_open_south = (cell_state & MazeCellStates.OPEN_SOUTH) == MazeCellStates.OPEN_SOUTH
+        will_open_west = (cell_state & MazeCellStates.OPEN_WEST) == MazeCellStates.OPEN_WEST
+        cant_tear = CantTearWallException(row, col, cell_state)
 
-    def set_cell_state(self, row, col, cell_state):
+        if row == 0 and will_open_north:
+            raise cant_tear
+        elif col == 0 and will_open_west:
+            raise cant_tear
+        elif row == len(self.maze) - 1 and will_open_south:
+            raise cant_tear
+        elif col == len(self.maze[0]) - 1 and will_open_east:
+            raise cant_tear
+        
+        self.maze[row][col] = self.maze[row][col] | cell_state
+
+    def tear_down_wall(self, row, col, cell_state):
         """
         Remove a wall in the given cell so that it, at least, "resembles" the
         specified cell_state (do read next paragraph).
@@ -77,21 +95,21 @@ class Maze(object):
         col - integer index
         cell state - preferrably as enumerated in MazeCellStates
         """
-        will_open_north = cell_state & MazeCellStates.OPEN_NORTH
-        will_open_east = cell_state & MazeCellStates.OPEN_EAST
-        will_open_south = cell_state & MazeCellStates.OPEN_SOUTH
-        will_open_west = cell_state & MazeCellStates.OPEN_WEST
-        cant_tear = CantTearWallException(row, col, cell_state)
-
-        if row == 0 and will_open_north:
-            raise cant_tear
-        elif col == 0 and will_open_west:
-            raise cant_tear
-        elif row == len(self.maze) - 1 and will_open_south:
-            raise cant_tear
-        elif col == len(self.maze[0]) - 1 and will_open_east:
-            raise cant_tear
         
-        self.maze[row][col] = self.maze[row][col] | cell_state
+        self.__set_cell_state(row, col, cell_state)
+        will_open_north = (cell_state & MazeCellStates.OPEN_NORTH) == MazeCellStates.OPEN_NORTH
+        will_open_east = (cell_state & MazeCellStates.OPEN_EAST) == MazeCellStates.OPEN_EAST
+        will_open_south = (cell_state & MazeCellStates.OPEN_SOUTH) == MazeCellStates.OPEN_SOUTH
+        will_open_west = (cell_state & MazeCellStates.OPEN_WEST) == MazeCellStates.OPEN_WEST
 
-        # Get the directions
+        if will_open_north:
+            self.__set_cell_state(row - 1, col, MazeCellStates.OPEN_SOUTH)
+
+        if will_open_east:
+            self.__set_cell_state(row, col + 1, MazeCellStates.OPEN_WEST)
+
+        if will_open_south:
+            self.__set_cell_state(row + 1, col, MazeCellStates.OPEN_NORTH)
+
+        if will_open_west:
+            self.__set_cell_state(row, col - 1, MazeCellStates.OPEN_EAST)
