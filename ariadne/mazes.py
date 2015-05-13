@@ -1,4 +1,6 @@
-class MazeCellStates:
+from .errors import CantTearWallException
+
+class MazeCellStates(object):
     """
     We use a nibble to represent the state of the cell. Each bit in a nibble
     represents the presence or absence of a wall. Specifically, their order
@@ -25,21 +27,32 @@ class MazeCellStates:
     Maps the cell states above to a textual description
     """
     LABELS = {
-        MazeCellState.NO_OPEN: "NO_OPEN",
-        MazeCellState.OPEN_WEST: "OPEN_WEST",
-        MazeCellState.OPEN_SOUTH: "OPEN_SOUTH",
-        MazeCellState.OPEN_SOUTH_WEST: "OPEN_SOUTH_WEST",
-        MazeCellState.OPEN_EAST: "OPEN_EAST",
-        MazeCellState.OPEN_EAST_WEST: "OPEN_EAST_WEST",
-        MazeCellState.OPEN_EAST_SOUTH_WEST: "OPEN_EAST_SOUTH_WEST",
-        MazeCellState.OPEN_NORTH: "OPEN_NORTH",
-        MazeCellState.OPEN_NORTH_WEST: "OPEN_NORTH_WEST",
-        MazeCellState.OPEN_NORTH_SOUTH: "OPEN_NORTH_SOUTH",
-        MazeCellState.OPEN_NORTH_SOUTH_WEST: "OPEN_NORTH_SOUTH_WEST",
-        MazeCellState.OPEN_NORTH_EAST: "OPEN_NORTH_EAST",
-        MazeCellState.OPEN_NORTH_EAST_WEST: "OPEN_NORTH_EAST_WEST",
-        MazeCellState.OPEN_NORTH_EAST_SOUTH: "OPEN_NORTH_EAST_SOUTH",
-        MazeCellState.OPEN_NORTH_EAST_SOUTH_WEST: "OPEN_NORTH_EAST_SOUTH_WEST"
+        NO_OPEN: "NO_OPEN",
+        OPEN_WEST: "OPEN_WEST",
+        OPEN_SOUTH: "OPEN_SOUTH",
+        OPEN_SOUTH_WEST: "OPEN_SOUTH_WEST",
+        OPEN_EAST: "OPEN_EAST",
+        OPEN_EAST_WEST: "OPEN_EAST_WEST",
+        OPEN_EAST_SOUTH_WEST: "OPEN_EAST_SOUTH_WEST",
+        OPEN_NORTH: "OPEN_NORTH",
+        OPEN_NORTH_WEST: "OPEN_NORTH_WEST",
+        OPEN_NORTH_SOUTH: "OPEN_NORTH_SOUTH",
+        OPEN_NORTH_SOUTH_WEST: "OPEN_NORTH_SOUTH_WEST",
+        OPEN_NORTH_EAST: "OPEN_NORTH_EAST",
+        OPEN_NORTH_EAST_WEST: "OPEN_NORTH_EAST_WEST",
+        OPEN_NORTH_EAST_SOUTH: "OPEN_NORTH_EAST_SOUTH",
+        OPEN_NORTH_EAST_SOUTH_WEST: "OPEN_NORTH_EAST_SOUTH_WEST"
+    }
+    
+    """
+    A mapping that tells you what to tear down in adjacent cells when you tear
+    down walls for a given cell.
+    """
+    INVERSES = {
+        OPEN_WEST: OPEN_EAST,
+        OPEN_EAST: OPEN_WEST,
+        OPEN_NORTH: OPEN_SOUTH,
+        OPEN_SOUTH: OPEN_NORTH,
     }
 
 
@@ -64,4 +77,21 @@ class Maze(object):
         col - integer index
         cell state - preferrably as enumerated in MazeCellStates
         """
+        will_open_north = cell_state & MazeCellStates.OPEN_NORTH
+        will_open_east = cell_state & MazeCellStates.OPEN_EAST
+        will_open_south = cell_state & MazeCellStates.OPEN_SOUTH
+        will_open_west = cell_state & MazeCellStates.OPEN_WEST
+        cant_tear = CantTearWallException(row, col, cell_state)
+
+        if row == 0 and will_open_north:
+            raise cant_tear
+        elif col == 0 and will_open_west:
+            raise cant_tear
+        elif row == len(self.maze) - 1 and will_open_south:
+            raise cant_tear
+        elif col == len(self.maze[0]) - 1 and will_open_east:
+            raise cant_tear
+        
         self.maze[row][col] = self.maze[row][col] | cell_state
+
+        # Get the directions
