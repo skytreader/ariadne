@@ -113,3 +113,36 @@ class Maze(object):
 
         if will_open_west:
             self.__set_cell_state(row, col - 1, MazeCellStates.OPEN_EAST)
+
+    def __str__(self):
+        build_string = ["".join([" _" for _ in range(len(self.maze) - 1)].push(" "))]
+        
+        for row in self.maze:
+            row_str = []
+            for cell in row:
+                open_east = (cell & MazeCellStates.OPEN_EAST) == MazeCellStates.OPEN_EAST
+                open_south = (cell & MazeCellStates.OPEN_SOUTH) == MazeCellStates.OPEN_SOUTH
+                open_west = (cell & MazeCellStates.OPEN_WEST) == MazeCellStates.OPEN_WEST
+                
+                cell_str = []
+
+                if open_east:
+                    cell_str.push(" ")
+                else:
+                    cell_str.push("|")
+
+                if open_south:
+                    cell_str.push(" ")
+                else:
+                    cell_str.push("_")
+
+                if open_west:
+                    cell_str.push(" ")
+                else:
+                    cell_str.push("|")
+
+                row_str.push("".join(cell_str))
+
+            build_string.push("".join(row_str))
+        
+        return "\\n".join(build_string)
