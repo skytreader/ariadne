@@ -81,6 +81,27 @@ class Maze(object):
         
         self.maze[row][col] = self.maze[row][col] | cell_state
 
+    def move_to_opening(self, row, col, state):
+        """
+        Gives the set of resulting coordinates if you move out from the openings
+        in the maze. The coordinates are given as tuples.
+
+        The movements are still constrained to the possible moves of this maze.
+        That is, you cannot move from row 8 if this maze only has 4 rows. You
+        also cannot move northwards from row 0, etc.
+
+        This does not do anything to the state of the Maze.
+        """
+        results = []
+
+        if (state & MazeCellStates.OPEN_NORTH) == MazeCellStates.OPEN_NORTH:
+            if (row - 1) >= 0:
+                results.append((row - 1, col))
+            else:
+                raise CantTearWallException(row, col, state)
+        
+        return set(results)
+
     def tear_down_wall(self, row, col, cell_state):
         """
         Remove a wall in the given cell so that it, at least, "resembles" the
@@ -128,10 +149,6 @@ class Maze(object):
                 open_west = (cell & MazeCellStates.OPEN_WEST) == MazeCellStates.OPEN_WEST
                 
                 cell_str = []
-
-                #if open_east:
-                #    cell_str.append(" ")
-                #else:
 
                 if open_west:
                     cell_str.append(" ")
