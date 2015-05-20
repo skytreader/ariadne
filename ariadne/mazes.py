@@ -95,10 +95,28 @@ class Maze(object):
         results = []
 
         if (state & MazeCellStates.OPEN_NORTH) == MazeCellStates.OPEN_NORTH:
-            if (row - 1) >= 0:
-                results.append((row - 1, col))
-            else:
+            if row == 0:
                 raise CantTearWallException(row, col, state)
+            else:
+                results.append((row - 1, col))
+
+        if (state & MazeCellStates.OPEN_EAST) == MazeCellStates.OPEN_EAST:
+            if col == (len(self.maze[row]) - 1):
+                raise CantTearWallException(row, col, state)
+            else:
+                results.append((row, col + 1))
+
+        if (state & MazeCellStates.OPEN_SOUTH) == MazeCellStates.OPEN_SOUTH:
+            if row == (len(self.maze) - 1):
+                raise CantTearWallException(row, col, state)
+            else:
+                results.append((row + 1, col))
+
+        if (state & MazeCellStates.OPEN_WEST) == MazeCellStates.OPEN_WEST:
+            if col == 0:
+                raise CantTearWallException(row, col, state)
+            else:
+                results.append((row, col - 1))
         
         return set(results)
 
