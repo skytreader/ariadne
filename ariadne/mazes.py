@@ -166,3 +166,15 @@ class Maze(object):
             build_string.append("".join(row_str))
         
         return "\n".join(build_string)
+
+    def __eq__(self, another_maze):
+        if len(self.maze) != len(another_maze.maze) or \
+          len(self.maze[0]) != len(another_maze.maze[0]):
+            return False
+
+        for r_me, r_other in zip(self.maze, another_maze.maze):
+            for c_me, c_other in zip(r_me, r_other):
+                if c_me != c_other:
+                    return False
+
+        return True
