@@ -55,6 +55,8 @@ class MazeCellStates(object):
         OPEN_SOUTH: OPEN_NORTH,
     }
 
+    CARDINAL = [OPEN_NORTH, OPEN_EAST, OPEN_SOUTH, OPEN_WEST]
+
 
 class Maze(object):
     
