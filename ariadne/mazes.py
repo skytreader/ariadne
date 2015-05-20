@@ -74,7 +74,7 @@ class Maze(object):
             raise cant_tear
         elif row == len(self.maze) - 1 and will_open_south:
             raise cant_tear
-        elif col == len(self.maze[0]) - 1 and will_open_east:
+        elif col == len(self.maze[row]) - 1 and will_open_east:
             raise cant_tear
         
         self.maze[row][col] = self.maze[row][col] | cell_state
@@ -115,8 +115,7 @@ class Maze(object):
             self.__set_cell_state(row, col - 1, MazeCellStates.OPEN_EAST)
 
     def __str__(self):
-        base = [" _" for _ in range(len(self.maze) - 1)]
-        base.append(" ")
+        base = [" _" for _ in range(len(self.maze))]
         build_string = ["".join(base)]
         
         for row in self.maze:
@@ -128,7 +127,11 @@ class Maze(object):
                 
                 cell_str = []
 
-                if open_east:
+                #if open_east:
+                #    cell_str.append(" ")
+                #else:
+
+                if open_west:
                     cell_str.append(" ")
                 else:
                     cell_str.append("|")
@@ -138,13 +141,9 @@ class Maze(object):
                 else:
                     cell_str.append("_")
 
-                if open_west:
-                    cell_str.append(" ")
-                else:
-                    cell_str.append("|")
-
                 row_str.append("".join(cell_str))
 
+            row_str.append("|")
             build_string.append("".join(row_str))
         
         return "\n".join(build_string)
