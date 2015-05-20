@@ -31,6 +31,12 @@ class MazeTest(unittest.TestCase):
           MazeCellStates.OPEN_WEST)
 
     def test_str(self):
+        raw_target = """
+ _ _ _
+|_|_|_|
+|_|_|_|
+|_|_|_|"""
+        self.assertEqual(raw_target, str(self.test_maze3))
         target = """
  _ _ _ 
 | |_  |
@@ -43,7 +49,7 @@ class MazeTest(unittest.TestCase):
         self.test_maze3.tear_down_wall(0, 1, MazeCellStates.OPEN_EAST)
         self.test_maze3.tear_down_wall(1, 1, MazeCellStates.OPEN_SOUTH)
         self.test_maze3.tear_down_wall(1, 2, MazeCellStates.OPEN_SOUTH)
-
+        self.assertEqual(target, str(self.test_maze3))
 
 if __name__ == "__main__":
     unittest.main()
