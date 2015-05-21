@@ -92,33 +92,33 @@ class Maze(object):
 
         This does not do anything to the state of the Maze.
         """
-        results = []
+        results = set()
 
         if (state & MazeCellStates.OPEN_NORTH) == MazeCellStates.OPEN_NORTH:
             if row == 0:
                 raise CantTearWallException(row, col, state)
             else:
-                results.append((row - 1, col))
+                results.add((row - 1, col))
 
         if (state & MazeCellStates.OPEN_EAST) == MazeCellStates.OPEN_EAST:
             if col == (len(self.maze[row]) - 1):
                 raise CantTearWallException(row, col, state)
             else:
-                results.append((row, col + 1))
+                results.add((row, col + 1))
 
         if (state & MazeCellStates.OPEN_SOUTH) == MazeCellStates.OPEN_SOUTH:
             if row == (len(self.maze) - 1):
                 raise CantTearWallException(row, col, state)
             else:
-                results.append((row + 1, col))
+                results.add((row + 1, col))
 
         if (state & MazeCellStates.OPEN_WEST) == MazeCellStates.OPEN_WEST:
             if col == 0:
                 raise CantTearWallException(row, col, state)
             else:
-                results.append((row, col - 1))
+                results.add((row, col - 1))
         
-        return set(results)
+        return results
 
     def tear_down_wall(self, row, col, cell_state):
         """
@@ -154,6 +154,10 @@ class Maze(object):
 
         if will_open_west:
             self.__set_cell_state(row, col - 1, MazeCellStates.OPEN_EAST)
+
+    def get_adjacent(self, row, col):
+        adjacent_cells = set()
+        return adjacent_cells
 
     def __str__(self):
         base = [" _" for _ in range(len(self.maze))]

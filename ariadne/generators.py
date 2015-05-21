@@ -19,11 +19,14 @@ class RecursiveBacktracker(MazeGenerator):
     
     def generate(self, width, height):
 
-        def carve_randomly(maze, row, col):
+        def carve_randomly(maze, row, col, visited):
             try:
                 random_carve = random.choice(MazeCellState.CARDINAL)
-                maze.tear_down_wall(row, col, random_carve)
-                return random_carve
+                if maze.move_to_opening(row, col, random_carve) not in visited:
+                    maze.tear_down_wall(row, col, random_carve)
+                    return random_carve
+
+                return None
             except CantTearWallException:
                 return None
 
@@ -38,3 +41,5 @@ class RecursiveBacktracker(MazeGenerator):
 
             while !carve:
                 carve = carve_randomly(maze, row, col)
+
+            row, col = maze.move_to_opening(row, col, carve)
