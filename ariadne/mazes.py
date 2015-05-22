@@ -172,10 +172,14 @@ class Maze(object):
         if col != (len(self.maze[row]) - 1):
             cols.append(col + 1)
 
-        # cross-product
+        # cross-products
         for r in rows:
+            adjacent_cells.add((r, col))
             for c in cols:
                 adjacent_cells.add((r, c))
+         
+        for c in cols:
+            adjacent_cells.add((row, c))
 
         return adjacent_cells
 

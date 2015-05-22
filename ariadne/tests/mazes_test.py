@@ -86,14 +86,14 @@ class MazeTest(unittest.TestCase):
           rect_maze_width - 2)])
 
         self.assertEqual(adj_0_0, self.rect_maze.get_adjacent(0, 0))
-        self.assertEqual(adj_0_limit, self.rect_maze.get_adjacent(0, rect_maze_width))
-        self.assertEqual(adj_limit_0, self.rect_maze.get_adjacent(rect_maze_height, 0))
-        self.assertEqual(adj_limit_limit, self.rect_maze.get_adjacent(rect_maze_height, rect_maze_width))
+        self.assertEqual(adj_0_limit, self.rect_maze.get_adjacent(0, rect_maze_width - 1))
+        self.assertEqual(adj_limit_0, self.rect_maze.get_adjacent(rect_maze_height - 1, 0))
+        self.assertEqual(adj_limit_limit, self.rect_maze.get_adjacent(rect_maze_height - 1, rect_maze_width - 1))
 
         adj_0_1 = set([(0, 0), (1, 0), (1, 1), (1, 2), (0, 2)])
         adj_1_0 = set([(0, 0), (0, 1), (1, 1), (2, 1), (2, 0)])
         adj_2_1 = set([(2, 0), (1, 0), (1, 1), (1, 2), (2, 2)])
-        adj_1_limit = set([(0, rect_maze_width - 2), (0, rect_maze_width - 2),
+        adj_1_limit = set([(0, rect_maze_width - 2), (0, rect_maze_width - 1),
           (1, rect_maze_width - 2), (2, rect_maze_width - 2), (2, rect_maze_width - 1)])
 
         self.assertEqual(adj_0_1, self.rect_maze.get_adjacent(0, 1))
