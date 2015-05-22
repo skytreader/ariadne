@@ -157,6 +157,26 @@ class Maze(object):
 
     def get_adjacent(self, row, col):
         adjacent_cells = set()
+        rows = []
+        cols = []
+
+        if row != 0:
+            rows.append(row - 1)
+        
+        if row != (len(self.maze) - 1):
+            rows.append(row + 1)
+
+        if col != 0:
+            cols.append(col - 1)
+
+        if col != (len(self.maze[row]) - 1):
+            cols.append(col + 1)
+
+        # cross-product
+        for r in rows:
+            for c in cols:
+                adjacent_cells.add((r, c))
+
         return adjacent_cells
 
     def __str__(self):

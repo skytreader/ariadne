@@ -104,5 +104,7 @@ class MazeTest(unittest.TestCase):
         adj_1_1 = set([(0, 0), (0, 1), (0, 2), (1, 0), (1, 2), (2, 0), (2, 1),
           (2, 2)])
 
+        self.assertEqual(adj_1_1, self.rect_maze.get_adjacent(1, 1))
+
 if __name__ == "__main__":
     unittest.main()
