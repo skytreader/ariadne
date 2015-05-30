@@ -1,6 +1,6 @@
 import random
 
-from .mazes import Maze, MazeCellState
+from .mazes import Maze, MazeCellStates
 from .errors import CantTearWallException
 
 """
@@ -62,7 +62,7 @@ class RecursiveBacktracker(MazeGenerator):
             stack.append((row, col))
             carve = carve_randomly(maze, row, col)
 
-            while !carve:
+            while not carve:
                 carve = carve_randomly(maze, row, col)
 
             row, col = maze.move_to_opening(row, col, carve)
