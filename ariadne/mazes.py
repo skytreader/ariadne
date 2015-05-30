@@ -175,8 +175,6 @@ class Maze(object):
         # cross-products
         for r in rows:
             adjacent_cells.add((r, col))
-            for c in cols:
-                adjacent_cells.add((r, c))
          
         for c in cols:
             adjacent_cells.add((row, c))
