@@ -30,7 +30,7 @@ class RecursiveBacktracker(MazeGenerator):
             """
             try:
                 random_carve = random.choice(MazeCellStates.CARDINAL)
-                if maze.move_to_opening(row, col, random_carve) not in visited:
+                if list(maze.move_to_opening(row, col, random_carve))[0] not in visited:
                     maze.tear_down_wall(row, col, random_carve)
                     return random_carve
 
@@ -62,8 +62,8 @@ class RecursiveBacktracker(MazeGenerator):
             while len(stack) and are_neighbors_visited(maze, row, col, visited):
                 row, col = stack.pop()
 
-            #if not len(stack):
-            #    break
+            if not len(stack):
+                break
                 
             visited.add((row, col))
             carve = carve_randomly(maze, row, col, visited)
