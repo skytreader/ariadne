@@ -76,14 +76,11 @@ class MazeTest(unittest.TestCase):
         rect_maze_width = len(self.rect_maze.maze[0])
 
         # Test for sides and corners
-        adj_0_0 = set([(0, 1), (1, 0), (1, 1)])
-        adj_0_limit = set([(0, rect_maze_width - 2), (1, rect_maze_width - 2),
-          (1, rect_maze_width - 1)])
-        adj_limit_0 = set([(rect_maze_height - 2, 0), (rect_maze_height - 2, 1),
-          (rect_maze_height - 1, 1)])
+        adj_0_0 = set([(0, 1), (1, 0)])
+        adj_0_limit = set([(0, rect_maze_width - 2), (1, rect_maze_width - 1)])
+        adj_limit_0 = set([(rect_maze_height - 2, 0), (rect_maze_height - 1, 1)])
         adj_limit_limit = set([(rect_maze_height - 2, rect_maze_width - 1),
-          (rect_maze_height - 2, rect_maze_width - 2), (rect_maze_height - 1,
-          rect_maze_width - 2)])
+          (rect_maze_height - 1, rect_maze_width - 2)])
 
         self.assertEqual(adj_0_0, self.rect_maze.get_adjacent(0, 0))
         self.assertEqual(adj_0_limit, self.rect_maze.get_adjacent(0, rect_maze_width - 1))
