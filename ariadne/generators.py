@@ -23,9 +23,13 @@ class RecursiveBacktracker(MazeGenerator):
             """
             Carves a random wall in the specified cell of the maze. The cell to
             which the resulting opening leads is guaranteed to be unvisited.
+            
+            Return the direction of the opening to which the carve was made. It
+            is further guaranteed that the opening made is an element of
+            MazeCellStates.CARDINAL.
             """
             try:
-                random_carve = random.choice(MazeCellState.CARDINAL)
+                random_carve = random.choice(MazeCellStates.CARDINAL)
                 if maze.move_to_opening(row, col, random_carve) not in visited:
                     maze.tear_down_wall(row, col, random_carve)
                     return random_carve
@@ -50,21 +54,24 @@ class RecursiveBacktracker(MazeGenerator):
         maze = Maze(width, height)
         row = random.choice(range(height))
         col = random.choice(range(width))
-        stack = []
+        stack = [(row, col)]
         visited = set()
         
         while stack:
             # backtracking clause
-            while are_neighbors_visited(maze, row, col, visited):
+            while len(stack) and are_neighbors_visited(maze, row, col, visited):
                 row, col = stack.pop()
+
+            if not len(stack):
+                break
                 
             visited.add((row, col))
-            stack.append((row, col))
-            carve = carve_randomly(maze, row, col)
+            carve = carve_randomly(maze, row, col, visited)
 
             while not carve:
-                carve = carve_randomly(maze, row, col)
+                carve = carve_randomly(maze, row, col, visited)
 
-            row, col = maze.move_to_opening(row, col, carve)
+            row, col = list(maze.move_to_opening(row, col, carve))[0]
+            stack.append((row, col))
 
         return maze
