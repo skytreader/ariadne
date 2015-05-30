@@ -20,6 +20,10 @@ class RecursiveBacktracker(MazeGenerator):
     def generate(self, width, height):
 
         def carve_randomly(maze, row, col, visited):
+            """
+            Carves a random wall in the specified cell of the maze. The cell to
+            which the resulting opening leads is guaranteed to be unvisited.
+            """
             try:
                 random_carve = random.choice(MazeCellState.CARDINAL)
                 if maze.move_to_opening(row, col, random_carve) not in visited:
@@ -30,16 +34,37 @@ class RecursiveBacktracker(MazeGenerator):
             except CantTearWallException:
                 return None
 
+        def are_neighbors_visited(maze, row, col, visited):
+            """
+            Return True if and only if all the neighbors of the indicated cell
+            has been visited.
+            """
+            neighbors = maze.get_adjacent(row, col)
+            
+            for n in neighbors:
+                if n not in visited:
+                    return False
+
+            return True
+
         maze = Maze(width, height)
         row = random.choice(range(height))
         col = random.choice(range(width))
-        visited = []
+        stack = []
+        visited = set()
         
         while stack:
-            visited.append((row, col))
+            # backtracking clause
+            while are_neighbors_visited(maze, row, col, visited):
+                row, col = stack.pop()
+                
+            visited.add((row, col))
+            stack.append((row, col))
             carve = carve_randomly(maze, row, col)
 
             while !carve:
                 carve = carve_randomly(maze, row, col)
 
             row, col = maze.move_to_opening(row, col, carve)
+
+        return maze
