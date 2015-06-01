@@ -14,7 +14,7 @@ class MazeTest(unittest.TestCase):
     def test_invalid_setup(self):
         self.assertRaises(InvalidSizeException, Maze, -2, 1)
         self.assertRaises(InvalidSizeException, Maze, 2, -1)
-        self.assertRaises(InvalidSizeExcpetion, Maze, -2, -1)
+        self.assertRaises(InvalidSizeException, Maze, -2, -1)
 
     def test_tear_down_wall(self):
         self.test_maze4.tear_down_wall(2, 2, MazeCellStates.OPEN_WEST)
