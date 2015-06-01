@@ -182,7 +182,7 @@ class Maze(object):
         return adjacent_cells
 
     def __str__(self):
-        base = [" _" for _ in range(len(self.maze))]
+        base = [" _" for _ in range(len(self.maze[0]))]
         build_string = ["".join(base)]
         
         for row in self.maze:
