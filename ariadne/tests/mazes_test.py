@@ -9,6 +9,7 @@ class MazeTest(unittest.TestCase):
         self.test_maze4 = Maze(4, 4)
         self.test_maze3 = Maze(3, 3)
         self.rect_maze = Maze(4, 3)
+        self.small_rect = Maze(3, 2)
 
     def test_tear_down_wall(self):
         self.test_maze4.tear_down_wall(2, 2, MazeCellStates.OPEN_WEST)
@@ -49,9 +50,21 @@ class MazeTest(unittest.TestCase):
         self.test_maze3.tear_down_wall(1, 1, MazeCellStates.OPEN_SOUTH)
         self.test_maze3.tear_down_wall(1, 2, MazeCellStates.OPEN_SOUTH)
         self.test_maze3.tear_down_wall(2, 1, MazeCellStates.OPEN_EAST_WEST)
-
         self.test_maze3.tear_down_wall(1, 2, MazeCellStates.OPEN_SOUTH)
+
         self.assertEqual(target, str(self.test_maze3))
+
+        rect_target = """ _ _ _
+|  _ _|
+|_ _ _|""".rstrip()
+        
+        self.small_rect.tear_down_wall(0, 2, MazeCellStates.OPEN_WEST);
+        self.small_rect.tear_down_wall(0, 1, MazeCellStates.OPEN_WEST);
+        self.small_rect.tear_down_wall(0, 0, MazeCellStates.OPEN_SOUTH);
+        self.small_rect.tear_down_wall(1, 0, MazeCellStates.OPEN_EAST);
+        self.small_rect.tear_down_wall(1, 1, MazeCellStates.OPEN_EAST);
+
+        self.assertEqual(rect_target, str(self.small_rect))
 
     def test_move_to_opening(self):
         move_north_11 = self.rect_maze.move_to_opening(1, 1, MazeCellStates.OPEN_NORTH)
