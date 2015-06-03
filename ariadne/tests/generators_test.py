@@ -1,5 +1,5 @@
 from ..mazes import Maze, MazeCellStates
-from ..generators import RecursiveBacktracker
+from ..generators import RecursiveBacktracker, EllersAlgorithm
 
 import unittest
 
@@ -8,7 +8,12 @@ class RecursiveBacktrackerTest(unittest.TestCase):
     Some shallow tests for the generator.
 
     Just makes sure that all cells have been carved and that the generated maze
-    is up to spec..
+    is up to spec.
+
+    # Using this as master class for testing other generators.
+
+    Just override `setUp` and make sure `self.generator` points to an instance
+    of the generator you want to test.
     """
 
     def setUp(self):
@@ -29,3 +34,9 @@ class RecursiveBacktrackerTest(unittest.TestCase):
                 self.assertNotEqual(cell, MazeCellStates.NO_OPEN)
 
         self.assertEqual(len(gen_maze.maze), 3)
+
+
+class EllersAlgorithmTest(RecursiveBacktrackerTest):
+    
+    def setUp(self):
+        self.generator = EllersAlgorithm()

@@ -76,3 +76,6 @@ class RecursiveBacktracker(MazeGenerator):
                 stack.append((row, col))
 
         return maze
+
+class EllersAlgorithm(MazeGenerator):
+    pass
