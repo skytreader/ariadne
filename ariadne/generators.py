@@ -1,3 +1,4 @@
+import math
 import random
 
 from .mazes import Maze, MazeCellStates
@@ -78,4 +79,44 @@ class RecursiveBacktracker(MazeGenerator):
         return maze
 
 class EllersAlgorithm(MazeGenerator):
-    pass
+
+    def generate(self, width, height):
+        def make_sets_and_merge(maze, cur_row_index, set_count = None):
+            if set_count is not None:
+                # This is the first case set_count must not be None
+                # The first merge is always uniformly-distributed.
+                start = 0
+                for limit in range(set_count, width, set_count):
+                    for cur_cell in range(start, set_count):
+                        maze.tear_down_wall(cur_row_index, cur_cell, MazeCellStates.OPEN_EAST)
+                    start += set_count + 1
+            else:
+                """
+                For Eller's Algorithm, sets are actually defined by their boundaries.
+                Hence, we don't need an actual set data structure, We just need
+                to keep track of the "last" element in each set as that element
+                is what is mergeable.
+                """
+                set_bounds = []
+                last_cell_state = None
+
+                for ci in range(width):
+                    if last_cell_state and 
+                      (maze.maze[cur_row_index][ci] & MazeCellStates.OPEN_NORTH) != (last_cell_state & MazeCellStates.OPEN_NORTH):
+                        set_bounds.append(ci - 1)
+
+                    last_cell_state = maze.maze[cur_row_index][ci]
+
+                # Do the merge
+                for bound in set_bounds:
+                    if random.choice((True, False)):
+                        maze.tear_down_wall(cur_row_index, bound, MazeCellStates.OPEN_EAST)
+                        
+
+        maze = Maze(width, height)
+        # Ensure sets won't be singletons
+        set_count = random.choice(range(width - 1))
+        divisions = math.floor(width / set_count)
+        # Construct the initial sets. They are in a tuple to indicate adjacency
+        
+        return maze

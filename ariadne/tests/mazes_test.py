@@ -87,7 +87,7 @@ class MazeTest(unittest.TestCase):
         self.assertNotEqual(three, self.test_maze4)
         three.tear_down_wall(0, 0, MazeCellStates.OPEN_EAST)
         self.assertNotEqual(three, self.test_maze3)
-    
+
     def test_get_adjacent(self):
         # Use rect_maze
         rect_maze_height = len(self.rect_maze.maze)
