@@ -103,7 +103,7 @@ class EllersAlgorithm(MazeGenerator):
 
                 for ci in range(1, width):
                     diff_north = (maze.maze[cur_row_index][ci] & MazeCellStates.OPEN_NORTH) != (maze.maze[cur_row_index][ci - 1] & MazeCellStates.OPEN_NORTH)
-                    last_has_boundary = (maze.maze[cur_row_index - 1][ci] & MazeCellStates.OPEN_WEST) == MazeCellStates.OPEN_WEST
+                    last_has_boundary = (maze.maze[cur_row_index - 1][ci] & MazeCellStates.OPEN_WEST) != MazeCellStates.OPEN_WEST
                     if diff_north or last_has_boundary:
                         set_bounds.append(ci - 1)
 
@@ -111,7 +111,7 @@ class EllersAlgorithm(MazeGenerator):
                 # Do the merge
                 for bound in set_bounds:
                     print("Try tear EAST %s, %s" % (cur_row_index, bound))
-                    if random.choice(list(range(10))) < 8:
+                    if random.choice(list(range(10))) < 8 or cur_row_index == (height - 1):
                         maze.tear_down_wall(cur_row_index, bound, MazeCellStates.OPEN_EAST)
                         
 
