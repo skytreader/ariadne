@@ -87,7 +87,7 @@ class EllersAlgorithm(MazeGenerator):
                 start = 0
                 for limit in range(set_count, width, set_count):
                     for cur_cell in range(start, set_count):
-                        if random.choice(list(range(10))) < 7:
+                        if random.choice(list(range(10))) < 8:
                             print("Tear EAST %s, %s" % (cur_row_index, cur_cell))
                             maze.tear_down_wall(cur_row_index, cur_cell, MazeCellStates.OPEN_EAST)
                     start += set_count + 1
@@ -102,14 +102,16 @@ class EllersAlgorithm(MazeGenerator):
                 last_cell_state = None
 
                 for ci in range(1, width):
-                    if (maze.maze[cur_row_index][ci] & MazeCellStates.OPEN_NORTH) != (maze.maze[cur_row_index][ci - 1] & MazeCellStates.OPEN_NORTH):
+                    diff_north = (maze.maze[cur_row_index][ci] & MazeCellStates.OPEN_NORTH) != (maze.maze[cur_row_index][ci - 1] & MazeCellStates.OPEN_NORTH)
+                    last_has_boundary = (maze.maze[cur_row_index - 1][ci] & MazeCellStates.OPEN_WEST) == MazeCellStates.OPEN_WEST
+                    if diff_north or last_has_boundary:
                         set_bounds.append(ci - 1)
 
                 print("Set boundaries %s" % set_bounds)
                 # Do the merge
                 for bound in set_bounds:
                     print("Try tear EAST %s, %s" % (cur_row_index, bound))
-                    if random.choice(list(range(10))) < 7:
+                    if random.choice(list(range(10))) < 8:
                         maze.tear_down_wall(cur_row_index, bound, MazeCellStates.OPEN_EAST)
                         
 
@@ -133,7 +135,7 @@ class EllersAlgorithm(MazeGenerator):
 
                     if is_new_set_next and not is_curset_merged:
                         maze.tear_down_wall(i, j, MazeCellStates.OPEN_SOUTH)
-                    elif random.choice((True, False)):
+                    elif random.choice(list(range(10))) < 3:
                         maze.tear_down_wall(i, j, MazeCellStates.OPEN_SOUTH)
                         is_curset_merged = True
 
