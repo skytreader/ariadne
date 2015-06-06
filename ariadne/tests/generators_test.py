@@ -20,7 +20,7 @@ class RecursiveBacktrackerTest(unittest.TestCase):
         self.generator = RecursiveBacktracker()
     
     def test_generate(self):
-        gen_maze = self.generator.generate(10, 10)
+        gen_maze = self.generator.generate(100, 100)
 
         for row in gen_maze.maze:
             for cell in row:
