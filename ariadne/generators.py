@@ -92,12 +92,7 @@ class EllersAlgorithm(MazeGenerator):
                             maze.tear_down_wall(cur_row_index, cur_cell, MazeCellStates.OPEN_EAST)
                     start += set_count + 1
             else:
-                """
-                For Eller's Algorithm, sets are actually defined by their boundaries.
-                Hence, we don't need an actual set data structure, We just need
-                to keep track of the "last" element in each set as that element
-                is what is mergeable.
-                """
+                prev_regions = get_regions(cur_row_index - 1)
                 set_bounds = []
                 last_cell_state = None
 
@@ -113,6 +108,41 @@ class EllersAlgorithm(MazeGenerator):
                     print("Try tear EAST %s, %s" % (cur_row_index, bound))
                     if random.choice(list(range(10))) < 8 or cur_row_index == (height - 1):
                         maze.tear_down_wall(cur_row_index, bound, MazeCellStates.OPEN_EAST)
+
+        def label_regions(prev_regions, row_index):
+            """
+            Given the regions of the previous row, determine the current set
+            memberships of each cell in the given row_index.
+
+            This assumes that the walls between the previous row and the current
+            row have been broken down. For distinction, those whose set derives
+            from a cell in the previous row will have a negative label while
+            those whose set is "organic" to the row will have a positive label.
+
+            The absolute value of labels range from [1, width]
+            """
+            labels = [0 for _ in range(width)]
+            cur_label = 1
+
+            for ci, cell in enumerate(maze.maze[row_index]):
+                if (cell & MazeCellStates.OPEN_NORTH) == MazeCellStates.OPEN_NORTH:
+                    labels[ci] = -prev_regions[ci]
+
+        def get_regions(row_index):
+            """
+            Labels the continuous regions in a row in the maze. Returns a list
+            of size width. The list has numbers for labels on what cell belongs
+            to which region. The numbers range from [1, width]
+            """
+            regions = [1 for _ in range(width)]
+
+            for cell_index in range(1, width):
+                if (maze.maze[row_index][cell_index] & MazeCellStates.OPEN_WEST) == MazeCellStates.OPEN_WEST:
+                    regions[cell_index] = regions[cell_index - 1]
+                else:
+                    regions[cell_index] = regions[cell_index - 1] + 1
+            
+            return regions
                         
 
         maze = Maze(width, height)
