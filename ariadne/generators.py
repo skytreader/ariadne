@@ -88,17 +88,14 @@ class EllersAlgorithm(MazeGenerator):
                 for limit in range(set_count, width, set_count):
                     for cur_cell in range(start, set_count):
                         if random.choice(list(range(10))) < 8:
-                            print("Tear EAST %s, %s" % (cur_row_index, cur_cell))
                             maze.tear_down_wall(cur_row_index, cur_cell, MazeCellStates.OPEN_EAST)
                     start += set_count + 1
             else:
                 prev_regions = get_regions(cur_row_index - 1)
                 cur_regions = label_regions(prev_regions, cur_row_index)
-                print(cur_regions)
                 # Do the merge
                 for ir, region in enumerate(cur_regions[1:], 1):
-                    print("Compare %s with %s is neq %s" % (region, cur_regions[ir - 1], region != cur_regions[ir - 1]))
-                    if region != cur_regions[ir - 1] and random.choice(list(range(10))) < 8:
+                    if region != cur_regions[ir - 1] and (random.choice(list(range(10))) < 8 or cur_row_index == (height - 1)):
                         cur_regions[ir - 1] = region
                         maze.tear_down_wall(cur_row_index, ir, MazeCellStates.OPEN_WEST)
 
