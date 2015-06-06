@@ -93,21 +93,14 @@ class EllersAlgorithm(MazeGenerator):
                     start += set_count + 1
             else:
                 prev_regions = get_regions(cur_row_index - 1)
-                set_bounds = []
-                last_cell_state = None
-
-                for ci in range(1, width):
-                    diff_north = (maze.maze[cur_row_index][ci] & MazeCellStates.OPEN_NORTH) != (maze.maze[cur_row_index][ci - 1] & MazeCellStates.OPEN_NORTH)
-                    last_has_boundary = (maze.maze[cur_row_index - 1][ci] & MazeCellStates.OPEN_WEST) != MazeCellStates.OPEN_WEST
-                    if diff_north or last_has_boundary:
-                        set_bounds.append(ci - 1)
-
-                print("Set boundaries %s" % set_bounds)
+                cur_regions = label_regions(prev_regions, cur_row_index)
+                print(cur_regions)
                 # Do the merge
-                for bound in set_bounds:
-                    print("Try tear EAST %s, %s" % (cur_row_index, bound))
-                    if random.choice(list(range(10))) < 8 or cur_row_index == (height - 1):
-                        maze.tear_down_wall(cur_row_index, bound, MazeCellStates.OPEN_EAST)
+                for ir, region in enumerate(cur_regions[1:], 1):
+                    print("Compare %s with %s is neq %s" % (region, cur_regions[ir - 1], region != cur_regions[ir - 1]))
+                    if region != cur_regions[ir - 1] and random.choice(list(range(10))) < 8:
+                        cur_regions[ir - 1] = region
+                        maze.tear_down_wall(cur_row_index, ir, MazeCellStates.OPEN_WEST)
 
         def label_regions(prev_regions, row_index):
             """
@@ -119,7 +112,7 @@ class EllersAlgorithm(MazeGenerator):
             from a cell in the previous row will have a negative label while
             those whose set is "organic" to the row will have a positive label.
 
-            The absolute value of labels range from [1, width]
+            The absolute value of labels range from [1, width].
             """
             labels = [0 for _ in range(width)]
             cur_label = 1
@@ -127,12 +120,17 @@ class EllersAlgorithm(MazeGenerator):
             for ci, cell in enumerate(maze.maze[row_index]):
                 if (cell & MazeCellStates.OPEN_NORTH) == MazeCellStates.OPEN_NORTH:
                     labels[ci] = -prev_regions[ci]
+                else:
+                    labels[ci] = cur_label
+                    cur_label += 1
+
+            return labels
 
         def get_regions(row_index):
             """
             Labels the continuous regions in a row in the maze. Returns a list
             of size width. The list has numbers for labels on what cell belongs
-            to which region. The numbers range from [1, width]
+            to which region. The numbers range from [1, width].
             """
             regions = [1 for _ in range(width)]
 
@@ -143,7 +141,6 @@ class EllersAlgorithm(MazeGenerator):
                     regions[cell_index] = regions[cell_index - 1] + 1
             
             return regions
-                        
 
         maze = Maze(width, height)
         # Ensure sets won't be singletons
