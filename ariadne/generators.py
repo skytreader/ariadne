@@ -87,7 +87,7 @@ class EllersAlgorithm(MazeGenerator):
                 start = 0
                 for limit in range(set_count, width, set_count):
                     for cur_cell in range(start, set_count):
-                        if random.choice(list(range(10))) < 8:
+                        if random.choice((True, False)):
                             maze.tear_down_wall(cur_row_index, cur_cell, MazeCellStates.OPEN_EAST)
                     start += set_count + 1
             else:
@@ -95,7 +95,7 @@ class EllersAlgorithm(MazeGenerator):
                 cur_regions = label_regions(prev_regions, cur_row_index)
                 # Do the merge
                 for ir, region in enumerate(cur_regions[1:], 1):
-                    if region != cur_regions[ir - 1] and (random.choice(list(range(10))) < 8 or cur_row_index == (height - 1)):
+                    if region != cur_regions[ir - 1] and (random.choice((True, False)) or cur_row_index == (height - 1)):
                         cur_regions[ir - 1] = region
                         maze.tear_down_wall(cur_row_index, ir, MazeCellStates.OPEN_WEST)
 
@@ -160,7 +160,7 @@ class EllersAlgorithm(MazeGenerator):
 
                     if is_new_set_next and not is_curset_merged:
                         maze.tear_down_wall(i, j, MazeCellStates.OPEN_SOUTH)
-                    elif random.choice(list(range(10))) < 3:
+                    elif random.choice((True, False)):
                         maze.tear_down_wall(i, j, MazeCellStates.OPEN_SOUTH)
                         is_curset_merged = True
 
