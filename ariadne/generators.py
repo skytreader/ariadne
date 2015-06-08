@@ -140,14 +140,11 @@ class EllersAlgorithm(MazeGenerator):
             return regions
 
         maze = Maze(width, height)
+        set_count = None
         # Base case: single row, where the first row is also the last row.
-        """if width == 2:
-            make_sets_and_merge(maze, 0)
-            return maze"""
-        # Ensure sets won't be singletons
-        set_count = random.choice(range(1, width - 1))
-        divisions = math.floor(width / set_count)
-        # Construct the initial sets. They are in a tuple to indicate adjacency
+        if width != 2:
+            # Ensure sets won't be singletons
+            set_count = random.choice(range(1, width - 1))
 
         for i in range(height):
             if i == 0:
