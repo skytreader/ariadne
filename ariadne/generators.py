@@ -141,8 +141,9 @@ class EllersAlgorithm(MazeGenerator):
 
         maze = Maze(width, height)
         # Base case: single row, where the first row is also the last row.
-        if width == 2:
+        """if width == 2:
             make_sets_and_merge(maze, 0)
+            return maze"""
         # Ensure sets won't be singletons
         set_count = random.choice(range(1, width - 1))
         divisions = math.floor(width / set_count)

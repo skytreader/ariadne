@@ -36,7 +36,7 @@ class RecursiveBacktrackerTest(unittest.TestCase):
         self.assertEqual(len(gen_maze.maze), 3)
 
 
-class EllersAlgorithmTest(RecursiveBacktrackerTest):
+class EllersAlgorithmTest(unittest.TestCase):
 
     def setUp(self):
         self.generator = EllersAlgorithm()
@@ -49,6 +49,7 @@ class EllersAlgorithmTest(RecursiveBacktrackerTest):
                 self.assertNotEqual(cell, MazeCellStates.NO_OPEN)
 
         gen_maze = self.generator.generate(2, 3)
+        print(gen_maze)
 
         for row in gen_maze.maze:
             self.assertEqual(len(row), 2)
