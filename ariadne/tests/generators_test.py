@@ -1,5 +1,5 @@
 from ..mazes import Maze, MazeCellStates
-from ..generators import RecursiveBacktracker, EllersAlgorithm
+from ..generators import RecursiveBacktracker, EllersAlgorithm, KruskalsAlgorithm
 
 import unittest
 
@@ -22,14 +22,19 @@ class RecursiveBacktrackerTest(unittest.TestCase):
     def test_generate(self):
         gen_maze = self.generator.generate(100, 100)
 
+        self.assertEqual(100, len(gen_maze.maze))
+
         for row in gen_maze.maze:
+            self.assertEqual(100, len(row))
             for cell in row:
                 self.assertNotEqual(cell, MazeCellStates.NO_OPEN)
 
         gen_maze = self.generator.generate(2, 3)
 
+        self.assertEqual(3, len(gen_maze.maze))
+
         for row in gen_maze.maze:
-            self.assertEqual(len(row), 2)
+            self.assertEqual(2, len(row))
             for cell in row:
                 self.assertNotEqual(cell, MazeCellStates.NO_OPEN)
 
@@ -44,15 +49,46 @@ class EllersAlgorithmTest(unittest.TestCase):
     def test_generate(self):
         gen_maze = self.generator.generate(100, 100)
 
+        self.assertEqual(100, len(gen_maze.maze))
+
         for row in gen_maze.maze:
+            self.assertEqual(100, len(row))
             for cell in row:
                 self.assertNotEqual(cell, MazeCellStates.NO_OPEN)
 
         gen_maze = self.generator.generate(2, 3)
-        print(gen_maze)
+
+        self.assertEqual(3, len(gen_maze.maze))
 
         for row in gen_maze.maze:
-            self.assertEqual(len(row), 2)
+            self.assertEqual(2, len(row))
+            for cell in row:
+                self.assertNotEqual(cell, MazeCellStates.NO_OPEN)
+
+        self.assertEqual(len(gen_maze.maze), 3)
+
+
+class KruskalsAlgorithmTest(unittest.TestCase):
+
+    def setUp(self):
+        self.generator = KruskalsAlgorithm()
+    
+    def test_generate(self):
+        gen_maze = self.generator.generate(100, 100)
+
+        self.assertEqual(100, len(gen_maze.maze))
+
+        for row in gen_maze.maze:
+            self.assertEqual(100, len(row))
+            for cell in row:
+                self.assertNotEqual(cell, MazeCellStates.NO_OPEN)
+
+        gen_maze = self.generator.generate(2, 3)
+
+        self.assertEqual(3, len(gen_maze.maze))
+
+        for row in gen_maze.maze:
+            self.assertEqual(2, len(row))
             for cell in row:
                 self.assertNotEqual(cell, MazeCellStates.NO_OPEN)
 
