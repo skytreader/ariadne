@@ -16,6 +16,7 @@ class MazeGenerator(object):
         """
         raise NotImplementedError("Can't generate a Maze :C")
 
+
 class RecursiveBacktracker(MazeGenerator):
     
     def generate(self, width, height):
@@ -77,6 +78,7 @@ class RecursiveBacktracker(MazeGenerator):
                 stack.append((row, col))
 
         return maze
+
 
 class EllersAlgorithm(MazeGenerator):
 
@@ -167,4 +169,11 @@ class EllersAlgorithm(MazeGenerator):
                     if is_new_set_next:
                         is_curset_merged = False
         
+        return maze
+
+
+class KruskalsAlgorithm(MazeGenerator):
+    
+    def generate(self, width, height):
+        maze = Maze(width, height)
         return maze
