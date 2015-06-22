@@ -21,6 +21,7 @@ class RecursiveBacktrackerTest(unittest.TestCase):
     
     def test_generate(self):
         gen_maze = self.generator.generate(100, 100)
+        print(gen_maze)
 
         self.assertEqual(100, len(gen_maze.maze))
 
