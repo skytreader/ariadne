@@ -74,6 +74,11 @@ class RecursiveBacktracker(MazeGenerator):
                 carve = carve_randomly(maze, row, col, visited)
 
             if carve:
+                # Before moving in to the opening, check if all neighbors have
+                # been visited. If no, append back to stack.
+                old_row, old_col = row, col
+                if not are_neighbors_visited(maze, row, col, visited):
+                    stack.append((row, col))
                 row, col = list(maze.move_to_opening(row, col, carve))[0]
                 stack.append((row, col))
 
